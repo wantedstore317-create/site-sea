@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Entrada reservada</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:24px;
+
+background:
+radial-gradient(circle at top, rgba(255,0,90,0.25), transparent 35%),
+radial-gradient(circle at bottom, rgba(120,0,255,0.25), transparent 40%),
+linear-gradient(180deg,#14010a 0%,#250115 50%,#1b0026 100%);
+
+color:white;
+
+}
+
+.container{
+width:100%;
+max-width:430px;
+}
+
+.card{
+
+text-align:center;
+padding:32px 22px;
+border-radius:24px;
+
+background:rgba(20,5,15,0.95);
+
+border:1px solid rgba(255,80,150,0.25);
+
+box-shadow:
+0 25px 80px rgba(0,0,0,0.55),
+0 0 40px rgba(255,0,140,0.18);
+
+}
+
+.badge{
+
+display:inline-block;
+padding:8px 14px;
+border-radius:999px;
+margin-bottom:18px;
+
+font-size:12px;
+font-weight:900;
+letter-spacing:1px;
+
+background:linear-gradient(135deg,#ff0055,#a200ff);
+border:1px solid rgba(255,120,200,0.35);
+
+}
+
+.title{
+
+font-size:1.9rem;
+line-height:1.2;
+font-weight:900;
+
+margin-bottom:18px;
+
+color:#fff;
+
+}
+
+.spots{
+
+display:inline-block;
+
+margin-bottom:16px;
+padding:10px 14px;
+
+border-radius:14px;
+
+background:rgba(255,0,120,0.12);
+
+border:1px solid rgba(255,0,150,0.3);
+
+color:#ffd6f0;
+
+font-size:14px;
+font-weight:800;
+
+}
+
+.timer-label{
+
+font-size:0.9rem;
+opacity:0.9;
+margin-bottom:10px;
+
+}
+
+.timer{
+
+display:inline-block;
+
+padding:14px 18px;
+
+border-radius:18px;
+
+font-size:2rem;
+font-weight:900;
+
+background:linear-gradient(135deg,rgba(255,0,110,0.2),rgba(150,0,255,0.2));
+
+border:1px solid rgba(255,120,220,0.3);
+
+margin-bottom:22px;
+
+}
+
+.button{
+
+display:block;
+width:100%;
+
+text-decoration:none;
+text-align:center;
+
+padding:18px 20px;
+
+border-radius:999px;
+
+font-weight:900;
+font-size:1.05rem;
+
+color:white;
+
+background:linear-gradient(135deg,#ff2d55,#ff0055,#ff6a00);
+
+box-shadow:0 14px 40px rgba(255,40,90,0.5);
+
+transition:0.2s;
+
+}
+
+.button:hover{
+
+transform:translateY(-2px) scale(1.02);
+box-shadow:0 20px 50px rgba(255,40,120,0.6);
+
+}
+
+.description{
+
+margin-top:16px;
+font-size:0.95rem;
+
+opacity:0.9;
+
+color:#ffd4ea;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="badge">
+ACESSO RESTRITO
+</div>
+
+<h1 class="title">
+Falta muito pouco para liberar seu acesso privado
+</h1>
+
+<div class="spots" id="spots">
+Restam apenas 12 acessos disponíveis
+</div>
+
+<div class="timer-label">
+Seu acesso expira em:
+</div>
+
+<div class="timer" id="timer">
+02:00
+</div>
+
+<a href="https://t.me/projetovenusvip_bot?start=bruxo" class="button">
+CLIQUE AQUI PARA ACESSAR
+</a>
+
+<p class="description">
+Continue agora antes que esta liberação temporária termine.
+</p>
+
+</div>
+
+</div>
+
+<script>
+
+let timeLeft = 120;
+
+const timerEl = document.getElementById("timer");
+const spotsEl = document.getElementById("spots");
+
+let remainingSpots = 12;
+
+const dropMoments = new Set([108,96,84,72,60,48,36,24,12]);
+
+function updateSpots(){
+
+if(remainingSpots === 1){
+
+spotsEl.textContent =
+"Resta apenas 1 acesso disponível";
+
+}else{
+
+spotsEl.textContent =
+`Restam apenas ${remainingSpots} acessos disponíveis`;
+
+}
+
+}
+
+function updateTimer(){
+
+const minutes = Math.floor(timeLeft / 60);
+const seconds = timeLeft % 60;
+
+timerEl.textContent =
+String(minutes).padStart(2,"0") + ":" +
+String(seconds).padStart(2,"0");
+
+}
+
+function updateCountdown(){
+
+updateTimer();
+updateSpots();
+
+if(timeLeft <= 0){
+
+clearInterval(timer);
+
+timerEl.textContent = "00:00";
+
+remainingSpots = 3;
+
+updateSpots();
+
+return;
+
+}
+
+timeLeft--;
+
+if(dropMoments.has(timeLeft) && remainingSpots > 3){
+
+remainingSpots--;
+
+updateSpots();
+
+}
+
+}
+
+updateCountdown();
+
+const timer = setInterval(updateCountdown,1000);
+
+</script>
+
+</body>
+</html>
